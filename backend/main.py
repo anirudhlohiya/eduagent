@@ -1,19 +1,21 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from agent import generate_study_plan, generate_quiz, evaluate_quiz
 
 app = FastAPI()
 
-# Allow React frontend to talk to this backend
+# CORS - must be before everything else
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- Request Models ---
+# Request Models
 class TopicRequest(BaseModel):
     topic: str
 
@@ -22,10 +24,21 @@ class EvaluateRequest(BaseModel):
     score: int
     total: int
 
-# --- Routes ---
+# Routes
 @app.get("/")
 def root():
     return {"message": "EduAgent API is running!"}
+
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(rest_of_path: str):
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+        }
+    )
 
 @app.post("/study-plan")
 def study_plan(request: TopicRequest):
