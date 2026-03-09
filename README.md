@@ -1,1 +1,1 @@
-# eduagent
+# EduAgent
