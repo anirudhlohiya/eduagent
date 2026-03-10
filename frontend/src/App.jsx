@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-const API = "https://fantastic-guacamole-9xq65w757jr29rg5-8000.app.github.dev";
+// const API = "https://fantastic-guacamole-9xq65w757jr29rg5-8000.app.github.dev";
+
+const API = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+
+function apiUrl(path) {
+  return `${API}${path}`;
+}
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
@@ -650,16 +656,18 @@ function HomeScreen({ onStart }) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API}/study-plan`, {
+      if (!API) throw new Error("VITE_API_URL is missing");
+
+      const res = await fetch(apiUrl("/study-plan"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topic: topic.trim() }),
       });
-      if (!res.ok) throw new Error("API error");
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
       const data = await res.json();
       onStart(topic.trim(), data);
-    } catch {
-      setError("Something went wrong. Make sure your backend is running!");
+    } catch (err) {
+      setError(`Something went wrong: ${err.message}. Check frontend .env and API URL.`);
     }
     setLoading(false);
   };
@@ -712,11 +720,12 @@ function StudyPlanScreen({ topic, plan, onStartQuiz, onBack }) {
   const handleQuiz = async () => {
     setLoadingQuiz(true);
     try {
-      const res = await fetch(`${API}/quiz`, {
+      const res = await fetch(apiUrl("/quiz"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topic }),
       });
+      if (!res.ok) throw new Error(`Quiz API error: ${res.status}`);
       const data = await res.json();
       onStartQuiz(data);
     } catch {
@@ -786,11 +795,12 @@ function QuizScreen({ topic, quiz, onFinish, onBack }) {
   
   if (current + 1 >= total) {
     try {
-      const res = await fetch(`${API}/evaluate`, {
+      const res = await fetch(apiUrl("/evaluate"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topic, score: finalScore, total }),
       });
+      if (!res.ok) throw new Error(`Evaluate API error: ${res.status}`);
       const data = await res.json();
       onFinish({ ...data, score: finalScore });
     } catch {
