@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from agent import generate_study_plan, generate_quiz, evaluate_quiz
 
@@ -25,8 +26,8 @@ class EvaluateRequest(BaseModel):
     total: int
 
 # Routes
-@app.get("/")
-def root():
+@app.get("/api")
+def api_root():
     return {"message": "EduAgent API is running!"}
 
 @app.options("/{rest_of_path:path}")
@@ -63,3 +64,5 @@ def evaluate(request: EvaluateRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")

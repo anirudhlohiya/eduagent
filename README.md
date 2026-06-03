@@ -87,6 +87,19 @@ npm run dev
 
 Then open `http://localhost:5173` in your browser.
 
+## 🐳 Docker
+
+Build and run the full app with Docker:
+
+```bash
+docker build -t eduagent .
+docker run -e GROQ_API_KEY="$GROQ_API_KEY" -p 8000:8000 eduagent
+```
+
+Then open `http://localhost:8000` in your browser.
+
+> Note: The app uses the `GROQ_API_KEY` environment variable at runtime.
+
 ---
 
 ## 🤖 How the AI Agent Works
