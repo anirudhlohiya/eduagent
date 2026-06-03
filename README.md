@@ -152,6 +152,8 @@ The pipeline does the following:
 
 > Add these in GitHub: `Settings > Secrets and variables > Actions`.
 
+> This update is a small CI/CD test change to validate the new pipeline.
+
 ---
 
 ## 🤖 How the AI Agent Works
