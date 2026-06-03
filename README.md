@@ -6,6 +6,10 @@
 ![Built With](https://img.shields.io/badge/Built%20With-React%20%2B%20FastAPI-ff6a9a?style=for-the-badge)
 ![AI](https://img.shields.io/badge/AI-Groq%20%2B%20LLaMA%203.1-6affd4?style=for-the-badge)
 
+## 🌐 Live Demo
+
+Try the deployed app here: https://eduagent-three.vercel.app/
+
 ---
 
 ## 🚀 What is EduAgent?
@@ -154,6 +158,10 @@ Students in India struggle with:
 - [ ] Progress tracking across sessions
 - [ ] PDF/NCERT textbook upload and study
 - [ ] Leaderboard for classroom competitions
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
