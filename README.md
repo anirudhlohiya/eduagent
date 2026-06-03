@@ -132,6 +132,26 @@ After pushing, the image will be available at:
 
 `docker.io/anirudhlohiya/eduagent:latest`
 
+## ⚙️ CI/CD with GitHub Actions
+
+A GitHub Actions workflow is included at `.github/workflows/ci-cd.yml`.
+
+The pipeline does the following:
+
+1. Checks out the repository
+2. Installs backend Python dependencies
+3. Installs frontend Node dependencies
+4. Builds the frontend assets
+5. Builds the Docker image
+6. Pushes the Docker image to Docker Hub when the push is on `main` and Docker Hub secrets are configured
+
+### GitHub secrets required for publishing
+
+- `DOCKERHUB_USERNAME` — your Docker Hub username
+- `DOCKERHUB_TOKEN` — Docker Hub access token
+
+> Add these in GitHub: `Settings > Secrets and variables > Actions`.
+
 ---
 
 ## 🤖 How the AI Agent Works
