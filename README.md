@@ -89,16 +89,48 @@ Then open `http://localhost:5173` in your browser.
 
 ## 🐳 Docker
 
-Build and run the full app with Docker:
+Build the Docker image locally:
 
 ```bash
 docker build -t eduagent .
-docker run -e GROQ_API_KEY="$GROQ_API_KEY" -p 8000:8000 eduagent
+```
+
+Create a local `.env` file with your Groq API key if you do not want to expose it on the command line:
+
+```bash
+echo "GROQ_API_KEY=your_key_here" > .env
+```
+
+Run the container using the env file:
+
+```bash
+docker run --env-file .env -p 8000:8000 eduagent
+```
+
+Or run it directly with an environment variable:
+
+```bash
+docker run -e GROQ_API_KEY="your_key_here" -p 8000:8000 eduagent
 ```
 
 Then open `http://localhost:8000` in your browser.
 
-> Note: The app uses the `GROQ_API_KEY` environment variable at runtime.
+> Do not commit your `.env` file or your Groq API key to GitHub.
+
+### Push to Docker Hub
+
+Tag and push the image to Docker Hub:
+
+```bash
+docker tag eduagent anirudhlohiya/eduagent:latest
+docker login
+# enter your Docker Hub username and password when prompted
+docker push anirudhlohiya/eduagent:latest
+```
+
+After pushing, the image will be available at:
+
+`docker.io/anirudhlohiya/eduagent:latest`
 
 ---
 
